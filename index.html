@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Need this for Android with Crosswalk -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    
+    <!-- https://github.com/driftyco/ionic/issues/6928 -->
+    <meta http-equiv="Content-Security-Policy" 
+             content="default-src * blob: 'self' gap: wss: ws: ;
+                      style-src * 'self' 'unsafe-inline' 'unsafe-eval'; 
+                      script-src * 'self' 'unsafe-inline' 'unsafe-eval';">
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script type="text/javascript" src="lib/jquery-2.1.4.min.js"></script>
+
+    <script type="text/javascript" src="connection.js"></script>
+    <script type="text/javascript" src="init.js"></script>
+
+
+    <script type="text/javascript">
+        function writeFile() {
+            if (sessionStorage.platform.toLowerCase() == "android") {
+                window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, onFileSystemSuccess, onError);
+            } else {
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onError);
+            }
+
+        }    
+
+        function onError(e) {
+            alert("onError");
+        };
+
+        function onFileSystemSuccess(fileSystem) {
+            var entry = "";
+            if (sessionStorage.platform.toLowerCase() == "android") {
+                entry = fileSystem;
+            } else {
+                entry = fileSystem.root;
+            }
+            entry.getDirectory("Folder_Name", {
+                create: true,
+                exclusive: false
+            }, onGetDirectorySuccess, onGetDirectoryFail);
+        };
+
+        function onGetDirectorySuccess(dir) {
+            dir.getFile(filename, {
+                create: true,
+                exclusive: false
+            }, gotFileEntry, errorHandler);
+        };
+
+        function gotFileEntry(fileEntry) {
+            // logic to write file in respective directory
+        };
+
+        function errorHandler(e) {
+            // handle error
+        }
+    </script>
+    
+    <!--<script type="text/javascript">
+        window.location.href = "http://unsistemaunavoz.com/?appp=1";
+    </script>-->
+    <!--<script>
+        function pgReady(){
+        alert('PG Ready');
+        }
+        
+        $(document).ready(function() {
+        alert('JQ Ready');
+        $('a.exit').click(function() {
+        localStorage.clear(); 
+        navigator.app.exitApp();
+        return true;
+        });
+        });
+        
+        document.addEventListener('deviceready', pgReady, false);
+    </script>-->
+    
+   <!-- <script type="text/javascript" charset="utf-8">       
+        document.addEventListener('deviceready', onDeviceReady, false);
+        
+        function onDeviceReady() {
+          /* When this function is called, PhoneGap has been initialized and is ready to roll */
+           console.log('device ready!');
+           //download
+           downloadFile();
+           //splashscreen
+           navigator.splashscreen.show(); 
+           // Register the event listener back
+           document.addEventListener("backbutton", onBackKeyDown, false);
+           //Color
+           StatusBar.overlaysWebView( true );
+            //StatusBar.backgroundColorByHexString('#209dc2');
+            StatusBar.styleLightContent();
+        }
+
+        
+        //spinner
+        spinnerplugin.show({
+            overlay: false,    // defaults to true
+            timeout: 30,       // defaults to 0 (no timeout)
+            fullscreen: true,  // defaults to false
+        });
+        
+        
+        //Controllers
+        angular.module('starter.controllers', [])
+
+        .run(function($ionicPlatform) {
+          $ionicPlatform.ready(function() {
+            setTimeout(function() {
+                navigator.splashscreen.hide();
+            }, 100);
+         });
+        })
+        
+        // Handle the back button
+        function onBackKeyDown() {
+        }
+        
+        //Download
+        var file_path;
+        function setFilePath() {
+            if(detectAndroid()) {   
+                file_path = "file:///android_asset/www/res/db/";
+                //4 Android
+            } else {
+                file_path = "res//db//";
+                //4 apache//iOS/desktop
+            }
+        }
+    </script>-->
+    
+</head>
+<body>
+    
+    <div id="online" data-iframe="http://llorenteycuencamexico.com/?appp=2">
+           <!-- the iframe is dynamically created here after we check offline/online connection-->
+        </div>
+        <div id="offline-footer">
+            <div id="offline-msg">Lost connection, functionality is limited.</div>
+            <button class="button button-positive" id="go-offline">Offline Mode</button>
+            <button class="button button-positive" id="close-offline">Close</button>
+        </div>
+
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript">
+            jQuery(document).ready( function() {
+                onLoad();
+            } );
+        </script>
+</body>
+</html>
